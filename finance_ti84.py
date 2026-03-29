@@ -63,7 +63,7 @@ def annuite_remb():
     c = float(input("Capital: "))
     t = taux_an()
     n = int(input("Nb mensualites: "))
-    tm = t / 12
+    tm = (1 + t) ** (1 / 12) - 1
     if tm == 0:
         a = c / n
     else:
@@ -77,7 +77,7 @@ def tableau_amort():
     c = float(input("Capital: "))
     t = taux_an()
     n = int(input("Nb mensualites: "))
-    tm = t / 12
+    tm = (1 + t) ** (1 / 12) - 1
     if tm == 0:
         a = c / n
     else:
