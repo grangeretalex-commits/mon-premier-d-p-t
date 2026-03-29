@@ -29,6 +29,7 @@ def menu():
     print("3:Actualisation")
     print("4:Annuite remb.")
     print("5:Tableau amort.")
+    print("6:Annuite capital.")
     print("0:Quitter")
     return int(input("Choix: "))
 
@@ -98,6 +99,39 @@ def tableau_amort():
         if k % 12 == 0 and k < n:
             input("[Suite...]")
 
+def annuite_capit():
+    print("1:Calcul versement")
+    print("2:Calcul capital")
+    ch = int(input("Choix: "))
+    t = taux_an()
+    tm = (1 + t) ** (1 / 12) - 1
+    if ch == 1:
+        vf = float(input("Capital vise: "))
+        n = int(input("Nb mois: "))
+        if tm == 0:
+            a = vf / n
+        else:
+            a = vf * tm / ((1 + tm) ** n - 1)
+        print("Taux annuel:", round(t * 100, 4), "%")
+        print("Taux mensuel:", round(tm * 100, 4), "%")
+        print("Versement:", round(a, 2))
+        print("Total verse:", round(a * n, 2))
+        print("Interets gagnes:",
+              round(vf - a * n, 2))
+    else:
+        a = float(input("Versement/mois: "))
+        n = int(input("Nb mois: "))
+        if tm == 0:
+            vf = a * n
+        else:
+            vf = a * ((1 + tm) ** n - 1) / tm
+        print("Taux annuel:", round(t * 100, 4), "%")
+        print("Taux mensuel:", round(tm * 100, 4), "%")
+        print("Capital obtenu:", round(vf, 2))
+        print("Total verse:", round(a * n, 2))
+        print("Interets gagnes:",
+              round(vf - a * n, 2))
+
 # Boucle principale
 while True:
     c = menu()
@@ -111,6 +145,8 @@ while True:
         annuite_remb()
     elif c == 5:
         tableau_amort()
+    elif c == 6:
+        annuite_capit()
     elif c == 0:
         break
     input("[OK]")
