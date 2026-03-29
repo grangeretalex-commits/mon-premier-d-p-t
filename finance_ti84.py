@@ -22,6 +22,19 @@ def taux_an():
         return t
     return (1 + t) ** f - 1
 
+_N = ("Quinz.","Mois","Trim.","Sem.","An")
+
+def svers():
+    print("Periodicite versement:")
+    print("1:Quinzaine 2:Mois")
+    print("3:Trim 4:Sem 5:An")
+    p = int(input("Choix: "))
+    return p
+
+def taux_per(t, p):
+    f = _P[p - 1]
+    return (1 + t) ** (1 / f) - 1
+
 def menu():
     print("=== FINANCE ===")
     print("1:Interet simple")
@@ -63,40 +76,43 @@ def actualisation():
 def annuite_remb():
     c = float(input("Capital: "))
     t = taux_an()
-    n = int(input("Nb mensualites: "))
-    tm = (1 + t) ** (1 / 12) - 1
-    if tm == 0:
+    p = svers()
+    tp = taux_per(t, p)
+    n = int(input("Nb echeances: "))
+    if tp == 0:
         a = c / n
     else:
-        a = c * tm / (1 - (1 + tm) ** (-n))
+        a = c * tp / (1 - (1 + tp) ** (-n))
     print("Taux annuel:", round(t * 100, 4), "%")
-    print("Taux mensuel:", round(tm * 100, 4), "%")
-    print("Mensualite:", round(a, 2))
+    print("Taux", _N[p-1], round(tp * 100, 4), "%")
+    print("Echeance:", round(a, 2))
     print("Cout total:", round(a * n, 2))
     print("Cout interet:", round(a * n - c, 2))
 
 def tableau_amort():
     c = float(input("Capital: "))
     t = taux_an()
-    n = int(input("Nb mensualites: "))
-    tm = (1 + t) ** (1 / 12) - 1
-    if tm == 0:
+    p = svers()
+    tp = taux_per(t, p)
+    n = int(input("Nb echeances: "))
+    f = _P[p - 1]
+    if tp == 0:
         a = c / n
     else:
-        a = c * tm / (1 - (1 + tm) ** (-n))
+        a = c * tp / (1 - (1 + tp) ** (-n))
     r = c
     print("Taux annuel:", round(t * 100, 4), "%")
-    print("Taux mensuel:", round(tm * 100, 4), "%")
-    print("M|Mens|Inter|Cap|Reste")
+    print("Taux", _N[p-1], round(tp * 100, 4), "%")
+    print("N|Ech|Inter|Cap|Reste")
     for k in range(1, n + 1):
-        it = r * tm
+        it = r * tp
         cp = a - it
         r = r - cp
         if r < 0:
             r = 0
         print(k, round(a, 1), round(it, 1),
               round(cp, 1), round(r, 1))
-        if k % 12 == 0 and k < n:
+        if k % f == 0 and k < n:
             input("[Suite...]")
 
 def annuite_capit():
@@ -104,29 +120,30 @@ def annuite_capit():
     print("2:Calcul capital")
     ch = int(input("Choix: "))
     t = taux_an()
-    tm = (1 + t) ** (1 / 12) - 1
+    p = svers()
+    tp = taux_per(t, p)
     if ch == 1:
         vf = float(input("Capital vise: "))
-        n = int(input("Nb mois: "))
-        if tm == 0:
+        n = int(input("Nb echeances: "))
+        if tp == 0:
             a = vf / n
         else:
-            a = vf * tm / ((1 + tm) ** n - 1)
+            a = vf * tp / ((1 + tp) ** n - 1)
         print("Taux annuel:", round(t * 100, 4), "%")
-        print("Taux mensuel:", round(tm * 100, 4), "%")
+        print("Taux", _N[p-1], round(tp * 100, 4), "%")
         print("Versement:", round(a, 2))
         print("Total verse:", round(a * n, 2))
         print("Interets gagnes:",
               round(vf - a * n, 2))
     else:
-        a = float(input("Versement/mois: "))
-        n = int(input("Nb mois: "))
-        if tm == 0:
+        a = float(input("Versement: "))
+        n = int(input("Nb echeances: "))
+        if tp == 0:
             vf = a * n
         else:
-            vf = a * ((1 + tm) ** n - 1) / tm
+            vf = a * ((1 + tp) ** n - 1) / tp
         print("Taux annuel:", round(t * 100, 4), "%")
-        print("Taux mensuel:", round(tm * 100, 4), "%")
+        print("Taux", _N[p-1], round(tp * 100, 4), "%")
         print("Capital obtenu:", round(vf, 2))
         print("Total verse:", round(a * n, 2))
         print("Interets gagnes:",
