@@ -69,6 +69,7 @@ def annuite_remb():
     else:
         a = c * tm / (1 - (1 + tm) ** (-n))
     print("Taux annuel:", round(t * 100, 4), "%")
+    print("Taux mensuel:", round(tm * 100, 4), "%")
     print("Mensualite:", round(a, 2))
     print("Cout total:", round(a * n, 2))
     print("Cout interet:", round(a * n - c, 2))
@@ -84,6 +85,7 @@ def tableau_amort():
         a = c * tm / (1 - (1 + tm) ** (-n))
     r = c
     print("Taux annuel:", round(t * 100, 4), "%")
+    print("Taux mensuel:", round(tm * 100, 4), "%")
     print("M|Mens|Inter|Cap|Reste")
     for k in range(1, n + 1):
         it = r * tm
